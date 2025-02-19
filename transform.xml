@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+    
+    <!-- Mērķis: Sakārtot pēc ATOMIC_NUMBER -->
+    <xsl:key name="atomicNumberKey" match="ATOM" use="ATOMIC_NUMBER"/>
+
+    <!-- Galvenā veidne -->
+    <xsl:template match="/">
+        <html>
+            <head>
+                <title>Periodic Table</title>
+                <style>
+                    table {
+                        width: 100%;
+                        border-collapse: collapse;
+                    }
+                    th, td {
+                        padding: 8px;
+                        text-align: left;
+                        border: 1px solid #ddd;
+                    }
+                    th {
+                        background-color: #f2f2f2;
+                    }
+                </style>
+            </head>
+            <body>
+                <h1>Periodic Table</h1>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Atomic Number</th>
+                            <th>Name</th>
+                            <th>Symbol</th>
+                            <th>Atomic Weight</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Iterācija pa elementiem, sakārtotiem pēc ATOMIC_NUMBER -->
+                        <xsl:for-each select="PERIODIC_TABLE/ATOM">
+                            <xsl:sort select="ATOMIC_NUMBER" data-type="number" order="ascending"/>
+                            <tr>
+                                <td><xsl:value-of select="ATOMIC_NUMBER"/></td>
+                                <td><xsl:value-of select="NAME"/></td>
+                                <td><xsl:value-of select="SYMBOL"/></td>
+                                <td><xsl:value-of select="ATOMIC_WEIGHT"/></td>
+                            </tr>
+                        </xsl:for-each>
+                    </tbody>
+                </table>
+            </body>
+        </html>
+    </xsl:template>
+
+</xsl:stylesheet>
